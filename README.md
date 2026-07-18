@@ -1,17 +1,28 @@
-# Secure Architecture & STRIDE-Based Threat Model
-## Online Payment Processing Application
+# Secure Payment Architecture & STRIDE Threat Model
 
-**Student Name:** Bilal Ahmed
+A security architecture and threat-modelling project for a multi-tenant online payment-processing platform.
 
-**Student ID:** 08018
+The project applies the STRIDE framework to identify threats across authentication, authorization, data storage, API communication, monitoring, and administrative access. It then proposes defence-in-depth controls, risk-treatment decisions, and residual-risk considerations.
 
-**Course:** Cybersecurity: Theory and Tools
+## Project Scope
 
-**Submission Date:** 1st March 2026
+- Layered payment-platform architecture
+- Asset identification and data classification
+- Trust-boundary analysis
+- STRIDE threat modelling
+- Identity and access management
+- Network segmentation and data protection
+- Logging, monitoring, and secure deployment
+- Risk treatment and residual-risk analysis
+
+**Author:** Bilal Ahmed  
+**Course:** Cybersecurity: Theory and Tools  
+**Completed:** March 2026
+
 
 ---
 
-# Task 1. System Definition and Architecture
+# 1. System Definition and Architecture
 
 ## 1.1 System Overview
 
@@ -103,7 +114,7 @@ The logical architecture follows a layered, defense-in-depth model:
 
 ---
 
-# Task 2. Asset Identification and Security Objectives
+# 2. Asset Identification and Security Objectives
 
 ## 2.1 Asset Inventory
 
@@ -133,7 +144,7 @@ The following table identifies all critical assets in the system, their location
 
 ---
 
-# Task 3. Threat Modeling (STRIDE)
+# 3. Threat Modeling (STRIDE)
 
 ## 3.1 Methodology
 
@@ -179,7 +190,7 @@ The analysis reveals several structural patterns in the threat landscape of this
 
 ---
 
-# Task 4. Secure Architecture Design
+# 4. Secure Architecture Design
 ![Task 4 Secured Architecture](task4.png)
 ## 4.1 Identity and Access Management
 
@@ -227,7 +238,7 @@ Security controls are applied at each architectural layer to ensure that no sing
 
 ---
 
-# Task 5. Risk Treatment and Residual Risk
+# 5. Risk Treatment and Residual Risk
 
 ## 5.1 Risk Treatment Decisions
 
@@ -279,7 +290,7 @@ In addition to the Mitigate and Transfer decisions in Section 5.1, two further t
 
 ---
 
-# Task 6. Secure Architecture Summary
+# 6. Secure Architecture Summary
 
 ## 6.1 System Overview
 
