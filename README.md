@@ -4,6 +4,27 @@ A security architecture and threat-modelling project for a multi-tenant online p
 
 The project applies the STRIDE framework to identify threats across authentication, authorization, data storage, API communication, monitoring, and administrative access. It then proposes defence-in-depth controls, risk-treatment decisions, and residual-risk considerations.
 
+---
+## Executive Summary
+
+This project develops a defence-in-depth architecture and STRIDE threat model for a hypothetical multi-tenant payment-processing platform.
+
+The assessment identifies critical assets, maps trust boundaries, analyzes threats across authentication, authorization, storage, APIs, monitoring and administrative access, and proposes preventive, detective and corrective controls.
+
+The design emphasizes:
+
+- strong identity and service authentication,
+- least-privilege authorization,
+- payment-data tokenization,
+- network segmentation,
+- cryptographically verified webhooks,
+- immutable audit logging,
+- privileged-access management,
+- secure deployment and monitoring.
+
+> **Scope note:** This is an academic architecture and threat-modelling exercise for a hypothetical payment platform. It is not a certification of PCI DSS compliance and has not undergone production validation, penetration testing or formal regulatory review.
+---
+
 ## Project Scope
 
 - Layered payment-platform architecture
@@ -85,7 +106,7 @@ Administrative roles — Application Admin and System Administrator — carry el
 
 ## 1.4 Data Types Handled
 
-- Credit Card Data — card number, expiry, CVV (Highly Sensitive — PCI DSS scope)
+- Payment Card Data — card number and expiry are handled only within the minimum required payment flow; CVV is used only for authorization and is never retained after authorization.
 - Payment Tokens — tokenized card representations (Highly Sensitive)
 - Customer Personal Data — name, email, billing address (Sensitive)
 - Merchant Credentials — API keys and authentication tokens (Highly Sensitive)
@@ -125,7 +146,7 @@ The following table identifies all critical assets in the system, their location
 | A1 | User Credentials | Credentials | Customer login data — username and hashed password | User Database | High | C, I, A, Ac |
 | A2 | Merchant API Credentials | Credentials | API keys and authentication tokens used by merchant integrations | Merchant Database | High | C, I, A, Ac |
 | A3 | Admin Credentials | Credentials | Administrative login credentials and active session tokens | User Database | High | C, I, A, Ac |
-| A4 | Credit Card Data | Financial | Card number, expiry, CVV — processed and tokenized in the Payment Service | Payment Service / Transaction DB | Critical | C, I, A, Ac |
+| A4 | Payment Card Data | Financial | Card data processed transiently by the Payment Service and tokenized through the payment processor; CVV is never stored | Payment Service / External Payment Processor | Critical | C, I, A, Ac |
 | A5 | Payment Tokens | Financial | Tokenized representation of card data used in place of raw card numbers | Payment Service | High | C, I, A |
 | A6 | Transaction Records | Financial | Orders, payments, refunds, and settlement data | Transaction/Billing DB | High | C, I, A, Ac |
 | A7 | Customer Personal Data | Personal | Name, email, phone number, billing address | User Database | Medium | C, I, A |
@@ -157,6 +178,18 @@ Each threat is documented with its affected component, a description of the atta
 The following annotated architecture diagram maps each threat to its affected component and location in the system. Threat IDs reference the Threat Model Table in Section 3.3.
 
 ![Task 3 Threat Diagram](ThreatModel.png)
+
+### Risk-Rating Method
+
+Risks are rated qualitatively using likelihood and impact:
+
+| Rating | Interpretation |
+|---|---|
+| High | Realistic attack path with major financial, regulatory, operational or confidentiality impact |
+| Medium | Plausible attack with meaningful but contained impact, or requiring elevated access |
+| Low | Limited likelihood or impact under the stated architecture and assumptions |
+
+The ratings represent inherent risk before the listed primary controls. Residual risk should be reassessed after implementation and verification of those controls.
 
 ## 3.3 Threat Model Table
 
@@ -309,23 +342,15 @@ The Online Payment Processing Application is a multi-layered, cloud-compatible p
 
 Fourteen threats were identified across all six required threat areas and five STRIDE categories: Spoofing, Tampering, Repudiation, Denial of Service, and Elevation of Privilege. The highest risk concentration lies in identity-based attacks and in threats targeting the payment orchestration layer, audit infrastructure, and administrative access plane. All identified threats are rated High, reflecting the financial sensitivity of the system. All have been assigned specific mitigation controls, and residual risks are documented, monitored, and accepted within operational risk tolerance.
 
-## 6.4 Assumptions
+## Assumptions and Limitations
 
-- The cloud infrastructure provider delivers secure physical hosting, network isolation, and baseline DDoS protection as part of its shared responsibility model.
-- The external payment processor and core banking system adhere to industry security standards and correctly sign and validate webhook callbacks.
-- TLS is correctly configured across all communication channels with valid certificates and no weak cipher suites enabled.
-- The Secrets Manager and KMS/HSM are properly configured, access-controlled, and monitored for unauthorized access.
-- Administrative controls — VPN enforcement, MFA, RBAC policies, and deployment approval gates — are correctly implemented and actively maintained.
-- The organization follows applicable compliance requirements, including PCI DSS, for the handling and storage of payment card data.
+- The platform is hypothetical and is not tied to a specific cloud provider.
+- Security controls are architectural recommendations rather than verified production implementations.
+- Risk ratings are qualitative and depend on the stated assumptions.
+- Third-party payment processors and banking integrations remain external trust dependencies.
+- PCI DSS, privacy, financial and regional regulatory requirements would require a separate formal compliance assessment.
+- Threat modelling should be repeated after architectural, data-flow or integration changes.
 
-## 6.5 Limitations
-
-- **Architectural scope:** This analysis addresses architectural and system-level controls. Application-level code security — specific CVEs, dependency vulnerabilities, and injection flaws — requires a separate DAST/SAST analysis.
-- **Infrastructure depth:** Low-level components such as container orchestration configuration, load balancer settings, and OS hardening are outside the scope of this threat model.
-- **Third-party opacity:** External services operate outside direct organizational control; their security posture is assessed through contracts and vendor reviews, not direct auditing.
-- **Physical security:** Physical security of data center facilities is outside the scope of this report and should be addressed through the cloud provider's compliance certifications.
-- **Compliance mapping:** Formal mapping to PCI DSS, GDPR, or other applicable frameworks is not within scope of this assignment but would be required prior to production deployment.
-- **Advanced persistent threats:** Sophisticated nation-state actors and novel zero-day techniques may bypass implemented controls — an accepted residual risk managed through layered defenses.
 
 ---
 
